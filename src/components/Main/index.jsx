@@ -1,5 +1,6 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import "./style.css";
+import Header from "../Header";
 
 const Main = () => {
   const playlists = [
@@ -76,51 +77,88 @@ const Main = () => {
     },
   ];
 
-  return (
-    <div className="main-container">
-      <div class="playlist_container">
-        <div id="result-playlists">
-          <div class="playlist">
-            <h1 id="greeting"></h1>
-            <h2 class="session">Navegar por todas as seções</h2>
-          </div>
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const [displayPlaylists, setDisplayPlaylists] = useState(true);
 
-          <div class="offer__scroll-container">
-            <div class="offer__list">
-              <section class="offer__list-item">
-                {playlists.map((playlist) => (
-                  <a key={playlist.id} href="" className="cards">
-                    <div className={`cards card${playlist.id}`}>
-                      <img key={playlist.imgSrc} src={playlist.imgSrc} alt="" />
-                      <span>{playlist.title}</span>
-                    </div>
-                  </a>
-                ))}
-              </section>
+  const requestApi = () => {
+    fetch(`http://localhost:3004/artists?name_like=${searchTerm}`)
+      .then((response) => response.json())
+      .then((data) => setResults(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  };
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setResults([]);
+      setDisplayPlaylists(true);
+    } else {
+      setDisplayPlaylists(false);
+      requestApi();
+    }
+  }, [searchTerm]);
+
+  const handleInputChange = (value) => {
+    setSearchTerm(value);
+  };
+
+  return (
+    <>
+      <Header handleInputChange={handleInputChange} />
+      <div className="main-container">
+        <div class="playlist_container">
+          <div
+            id="result-playlists"
+            className={displayPlaylists ? "" : "hidden"}
+          >
+            <div class="playlist">
+              <h1 id="greeting"></h1>
+              <h2 class="session">Navegar por todas as seções</h2>
+            </div>
+
+            <div class="offer__scroll-container">
+              <div class="offer__list">
+                <section class="offer__list-item">
+                  {playlists.map((playlist) => (
+                    <a key={playlist.id} href="" className="cards">
+                      <div className={`cards card${playlist.id}`}>
+                        <img
+                          key={playlist.imgSrc}
+                          src={playlist.imgSrc}
+                          alt=""
+                        />
+                        <span>{playlist.title}</span>
+                      </div>
+                    </a>
+                  ))}
+                </section>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div id="result-artist" class="hidden">
-          <div class="grid-container">
-            <div class="artist-card" id="">
-              <div class="card-img">
-                <img id="artist-img" class="artist-img" />
-                <div class="play">
-                  <span class="fa fa-solid fa-play"></span>
+          <div id="result-artist" className={displayPlaylists ? "" : "hidden"}>
+            {results.map((artist) => (
+              <div key={artist.id} className="grid-container">
+                <div className="artist-card" id="">
+                  <div className="card-img">
+                    <img src={artist.urlImg} alt="" />
+                    <div className="play">
+                      <span className="fa fa-solid fa-play"></span>
+                    </div>
+                  </div>
+                  <div className="card-text">
+                    <a title={artist.name} className="vst" href="">
+                      <span className="artist-name">{artist.name}</span>
+                      <span className="artist-categorie">Artista</span>
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div class="card-text">
-                <a title="Foo Fighters" class="vst" href="">
-                  <span class="artist-name" id="artist-name"></span>
-                  <span class="artist-categorie">Artista</span>
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

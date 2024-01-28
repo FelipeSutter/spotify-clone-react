@@ -4,7 +4,7 @@ import arrowLeft from "../../assets/icons/small-left.png";
 import arrowRight from "../../assets/icons/small-right.png";
 import search from "../../assets/icons/search.png";
 
-const Header = () => {
+const Header = ({ handleInputChange }) => {
   return (
     <nav class="header_navigation">
       <div class="navigation">
@@ -24,6 +24,7 @@ const Header = () => {
           type="text"
           maxlength="800"
           placeholder="O que você quer ouvir?"
+          onChange={handleInputChange}
         />
       </div>
 
