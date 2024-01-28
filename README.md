@@ -4,4 +4,9 @@
 
 <h2>Componentes</h2>
 
+<pre><code>Header: aqui se encontra a aba de pesquisa, botões de voltar e botões para entrar na conta.</code></pre>
+<pre><code>Main: conteúdo principal da página, com as capas de cada categoria de música.</code></pre>
+<pre><code>Sidebar: barra lateral com informações extras e playlists.</code></pre>
+<pre><code>Footer: um footer com informações para se inscrever no programa premium.</code></pre>
+
 
