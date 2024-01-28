@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import "./style.css";
 import Header from "../Header";
 
@@ -81,11 +82,15 @@ const Main = () => {
   const [results, setResults] = useState([]);
   const [displayPlaylists, setDisplayPlaylists] = useState(true);
 
-  const requestApi = () => {
-    fetch(`http://localhost:3004/artists?name_like=${searchTerm}`)
-      .then((response) => response.json())
-      .then((data) => setResults(data))
-      .catch((error) => console.error("Error fetching data:", error));
+  const requestApi = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3004/artists?name_like=${searchTerm}`
+      );
+      setResults(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -98,8 +103,8 @@ const Main = () => {
     }
   }, [searchTerm]);
 
-  const handleInputChange = (value) => {
-    setSearchTerm(value);
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
   };
 
   return (
@@ -136,7 +141,7 @@ const Main = () => {
             </div>
           </div>
 
-          <div id="result-artist" className={displayPlaylists ? "" : "hidden"}>
+          <div id="result-artist">
             {results.map((artist) => (
               <div key={artist.id} className="grid-container">
                 <div className="artist-card" id="">
