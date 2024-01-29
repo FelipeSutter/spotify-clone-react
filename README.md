@@ -9,4 +9,9 @@
 <pre><code>Sidebar: barra lateral com informações extras e playlists.</code></pre>
 <pre><code>Footer: um footer com informações para se inscrever no programa premium.</code></pre>
 
+<h2>Visão do projeto</h2>
+
+![image](https://github.com/FelipeSutter/spotify-clone-react/assets/114835043/af08d3ff-b30b-468c-a45f-a083cd2c9c88)
+
+
 
